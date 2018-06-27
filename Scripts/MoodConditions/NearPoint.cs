@@ -20,8 +20,12 @@ public class NearPoint : MoodCondition {
         get
         {
             foreach(NearPointTarget point in points)
-                if(point.near)
+                if (point.near)
+                {
+                    isValid = true;
                     return true;
+                }
+            isValid = false;
             return false;
         }
     }

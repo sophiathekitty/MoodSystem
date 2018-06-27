@@ -4,4 +4,5 @@ using UnityEngine;
 
 public abstract class MoodCondition : ScriptableObject {
     public abstract bool Valid { get; }
+    public bool isValid;
 }
