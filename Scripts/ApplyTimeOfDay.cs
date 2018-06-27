@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class ApplyTimeOfDay : MonoBehaviour {
     public MoodManager moods;
+    public FloatVariable time;
     private Camera _camera;
     private Light _light;
-    public bool applyTime = false;
+    public float fadeRate = 0.01f;
 	// Use this for initialization
 	void Start () {
         _camera = GetComponent<Camera>();
@@ -17,12 +18,14 @@ public class ApplyTimeOfDay : MonoBehaviour {
 	void Update () {
         Mood mood = moods.CurrentMood;
         TimeOfDay timeOfDay = mood.timeOfDay;
+        
+
         if(_camera != null && timeOfDay != null)
-            _camera.backgroundColor = timeOfDay.sky.Evaluate(timeOfDay.timeRate);
+            _camera.backgroundColor = Color.Lerp(_camera.backgroundColor,timeOfDay.sky.Evaluate(time.RuntimeValue),fadeRate);
         if (_light != null && timeOfDay != null)
         {
-            _light.color = timeOfDay.light.Evaluate(timeOfDay.timeRate);
-            _light.intensity = timeOfDay.intensity.Evaluate(timeOfDay.timeRate);
+            _light.color = Color.Lerp(_light.color,timeOfDay.light.Evaluate(time.RuntimeValue), fadeRate);
+            _light.intensity = Mathf.Lerp(_light.intensity, timeOfDay.intensity.Evaluate(time.RuntimeValue), fadeRate);
         }
 
     }
