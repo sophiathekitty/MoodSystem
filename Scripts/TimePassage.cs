@@ -7,32 +7,19 @@ public class TimePassage : MonoBehaviour {
     public MoodManager moods;
     public FloatVariable timeOfDay;
     public const float SecondsInDay = 60 * 60 * 24;
-    public float GameDayLasts = 60 * 60;
-    public float DeltaPercent
-    {
-        get
-        {
-            return (Time.deltaTime / SecondsInDay) * (GameDayLasts / SecondsInDay);
-        }
-    }
+    public float DayRatio = 24f;
 	// Use this for initialization
 	void Start () {
 		
 	}
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update()
+    {
         DateTime now = DateTime.Now;
         float secs = (now.Hour * 60 * 60) + (now.Minute * 60) + now.Second;
-        timeOfDay.RuntimeValue = secs / SecondsInDay;
-        // update time of day
-        Debug.Log(timeOfDay.RuntimeValue);
-        return;
-
-        timeOfDay.RuntimeValue += DeltaPercent;
-        while (timeOfDay.RuntimeValue > 1)
-            timeOfDay.RuntimeValue--;
-
-        //moods.ApplyDeltaTime();
-	}
+        float time = ((secs / SecondsInDay) * DayRatio);
+        float timeFlat = Mathf.Floor(time);
+        timeOfDay.RuntimeValue = time - timeFlat;
+    }
 }
